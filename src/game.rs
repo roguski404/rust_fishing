@@ -30,6 +30,7 @@ pub struct Game {
     pub lake_gr: Texture2D,
     pub bar_gr: Texture2D,
     pub fish1_gr: Texture2D,
+    pub fish2_gr: Texture2D,
 }
 
 
@@ -38,9 +39,10 @@ impl Game {
         let lake_gr = load_texture("graphics/tlo.png").await.unwrap();
         let bar_gr = load_texture("graphics/bar.png").await.unwrap();
         let fish1_gr = load_texture("graphics/ryba1.png").await.unwrap();
+        let fish2_gr = load_texture("graphics/ryba2.png").await.unwrap();
         Self {
             stan: Faza::Playing,
-            level: 1,
+            level: 2,
             bar: 200.0,
             fish: 250.0,
             progress: 0.5,
@@ -53,6 +55,7 @@ impl Game {
             lake_gr,
             bar_gr,
             fish1_gr,
+            fish2_gr,
         }
 
     }
@@ -88,10 +91,13 @@ impl Game {
         if is_key_down(KeyCode::Down) {
             self.bar += 150.0 * self.speed * dt;
         }
-
-        self.fish += (rand::gen_range(-4.0, 4.0)) * 100.0 * dt;
-
-    if(self.fish<120.0){
+if(self.level==1) {
+    self.fish += (rand::gen_range(-4.0, 4.0)) * 100.0 * dt;
+}
+        else if(self.level==2) {
+            self.fish += (rand::gen_range(-4.0, 4.0)) * 140.0 * dt;
+        }
+        if(self.fish<120.0){
         self.fish = 120.0;
     }else if(self.fish > 700.0){
         self.fish =700.0;
@@ -125,8 +131,12 @@ else {
 
         draw_player_bar(&mut self.bar, self.bar_size, &self.bar_gr);
 
-    draw_fish(&self.fish1_gr, self.fish);
 
+        if(self.level==1) {
+            draw_fish(&self.fish1_gr, self.fish, self.level);
+        }else if(self.level==2){
+            draw_fish(&self.fish2_gr, self.fish, self.level);
+        }
 
 
 

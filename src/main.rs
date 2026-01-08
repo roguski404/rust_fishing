@@ -21,7 +21,7 @@ async fn main() {
      game.update();
      game.draw();
 
-    next_frame().await;
+     next_frame().await;
 
 
 

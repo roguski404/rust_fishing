@@ -50,6 +50,9 @@ pub fn draw_bar(bar_texture: &Texture2D) {
                 ..Default::default()
             },
         );
+
+
+
     }
 pub fn draw_player_bar(player_y: &mut f32, bar_size: f32, bar_texture: &Texture2D) {
     let scale = world_scale();
@@ -77,14 +80,21 @@ pub fn draw_player_bar(player_y: &mut f32, bar_size: f32, bar_texture: &Texture2
     draw_rectangle(player_x, *player_y, player_w, player_h, GREEN);
 }
 
-pub fn draw_fish(fish_texture: &Texture2D, fish_y: f32) {
+pub fn draw_fish(fish_texture: &Texture2D, fish_y: f32, level :u32) {
 
     let scale = world_scale();
-    let fish_w = 64.0 * scale;
-    let fish_h = 64.0 * scale;
+    let mut fish_w = 64.0 * scale;
+    let mut fish_h = 64.0 * scale;
 
-    let fish_x = screen_width() - fish_w - 135.0 * scale;
-    
+    let mut fish_x = screen_width() - fish_w - 135.0 * scale;
+    if(level==2) {
+        fish_w = 95.0 * scale;
+        fish_h = 95.0 * scale;
+        fish_x = screen_width() - fish_w - 125.0 * scale;
+
+    }
+
+
 
 
     draw_texture_ex(
@@ -97,6 +107,11 @@ pub fn draw_fish(fish_texture: &Texture2D, fish_y: f32) {
             ..Default::default()
         },
     );
+    if(level==1) {
+        draw_text("LVL 1: REGULAR FISH ", (screen_width()/2.0) - 100.0,  100.0, 80.0 * scale, WHITE);
 
+    }else if (level==2) {
+        draw_text("LVL 2: PIKE, THE KING OF LAKES", 10.0 ,  100.0, 80.0 * scale, WHITE);
+    }
 
 }
