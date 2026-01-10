@@ -42,7 +42,7 @@ impl Game {
         let fish2_gr = load_texture("graphics/ryba2.png").await.unwrap();
         Self {
             stan: Faza::Playing,
-            level: 2,
+            level: 1s,
             bar: 200.0,
             fish: 250.0,
             progress: 0.5,
