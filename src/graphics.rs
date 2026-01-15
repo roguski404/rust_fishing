@@ -115,3 +115,55 @@ pub fn draw_fish(fish_texture: &Texture2D, fish_y: f32, level :u32) {
     }
 
 }
+const BORDER_X: f32 = 4.0;
+const BORDER_Y: f32 = 4.0;
+
+pub fn draw_health_bar(
+    texture: &Texture2D,
+    x: f32,
+    y: f32,
+    scale: f32,
+    progress: f32,
+) {
+    let tex_w = 640.0 * scale;
+    let tex_h = 50.0 * scale;
+
+
+    draw_texture_ex(
+        texture,
+        x,
+        y,
+        WHITE,
+        DrawTextureParams {
+            dest_size: Some(vec2(tex_w, tex_h)),
+            ..Default::default()
+        },
+    );
+
+    const BORDER_X: f32 = 3.0;
+    const BORDER_Y: f32 = 3.0;
+
+
+    let inner_x = x + BORDER_X * scale;
+    let inner_y = y + BORDER_Y * scale;
+    let inner_w = tex_w - BORDER_X * 2.0 * scale;
+    let inner_h = tex_h - BORDER_Y * 2.0 * scale;
+
+    let p = progress.clamp(0.0, 1.0);
+
+
+    let black_w = inner_w * p;
+
+
+    draw_rectangle(
+        inner_x + inner_w - black_w,
+        inner_y,
+        black_w,
+        inner_h,
+        BLACK,
+    );
+}
+
+
+
+

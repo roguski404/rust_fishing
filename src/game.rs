@@ -10,6 +10,7 @@ pub enum Faza {
     Upgrade,
     GameOver,
     Victory,
+    Start,
 }
 
 pub struct Game {
@@ -31,6 +32,7 @@ pub struct Game {
     pub bar_gr: Texture2D,
     pub fish1_gr: Texture2D,
     pub fish2_gr: Texture2D,
+    pub health_bar_gr: Texture2D,
 }
 
 
@@ -40,9 +42,10 @@ impl Game {
         let bar_gr = load_texture("graphics/bar.png").await.unwrap();
         let fish1_gr = load_texture("graphics/ryba1.png").await.unwrap();
         let fish2_gr = load_texture("graphics/ryba2.png").await.unwrap();
+        let health_bar_gr= load_texture("graphics/health_bar.png").await.unwrap();
         Self {
-            stan: Faza::Playing,
-            level: 1s,
+            stan: Faza::Start,
+            level: 1,
             bar: 200.0,
             fish: 250.0,
             progress: 0.5,
@@ -56,12 +59,14 @@ impl Game {
             bar_gr,
             fish1_gr,
             fish2_gr,
+            health_bar_gr,
         }
 
     }
 
     pub fn update(&mut self) {
         match self.stan {
+            Faza::Start => self.update_start(),
             Faza::Playing => self.update_playing(),
             Faza::Upgrade => self.update_upgrade(),
             Faza::GameOver => {},
@@ -73,6 +78,7 @@ impl Game {
         clear_background(BLACK);
 
         match self.stan {
+            Faza::Start => self.draw_start(),
             Faza::Playing => self.draw_playing(),
             Faza::Upgrade => self.draw_upgrade(),
             Faza::GameOver => self.draw_game_over(),
@@ -104,8 +110,7 @@ if(self.level==1) {
     }
 
 
-
-    if ( (self.bar - self.fish).abs() < ( 30.0 * self.bar_size) ){
+    if ( (self.bar - self.fish).abs() < ( 39.0 * self.bar_size) ){
             self.progress += 0.09 * dt * self.progress_speed;
         }
 else {
@@ -127,6 +132,18 @@ else {
 
     fn draw_playing(&mut self) {
         draw_background(&self.lake_gr);
+        let scale = world_scale();
+        let x = (screen_width() - 640.0 * scale) / 2.0;
+        let y = screen_height() - (50.0 * scale) - 20.0 * scale;
+
+        draw_health_bar(
+            &self.health_bar_gr,
+            x,
+            y,
+            scale,
+            self.progress,
+        );
+
         draw_bar(&self.bar_gr);
 
         draw_player_bar(&mut self.bar, self.bar_size, &self.bar_gr);
@@ -229,6 +246,50 @@ else {
 
 
     }
+    fn draw_start(&self) {
+        let sw = screen_width();
+        let sh = screen_height();
+
+        draw_text(
+            "FISHING GAME",
+            sw / 2.0 - 150.0,
+            sh / 2.0 - 40.0,
+            50.0,
+            GREEN,
+        );
+
+        draw_text(
+            "PRESS SPACE TO START",
+            sw / 2.0 - 160.0,
+            sh / 2.0 + 10.0,
+            30.0,
+            WHITE,
+        );
+        draw_text(
+            "use up-button and down-button to move "
+            ,
+            sw / 2.0 - 160.0,
+            sh / 2.0 + 40.0,
+            20.0,
+            WHITE,
+        );
+
+        draw_text(
+            "green bar and try to keep fish in",
+            sw / 2.0 - 160.0,
+            sh / 2.0 + 60.0,
+            20.0,
+            WHITE,
+        );
+    }
+
+    fn update_start(&mut self) {
+        if is_key_pressed(KeyCode::Space) {
+            self.stan = Faza::Playing;
+        }
+    }
+
+
     fn draw_game_over(&self) {
         draw_text("GAME OVER", 200.0, 200.0, 40.0, RED);
     }
