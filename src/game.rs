@@ -114,7 +114,7 @@ if(self.level==1) {
             self.progress += 0.09 * dt * self.progress_speed;
         }
 else {
-    self.progress -= 0.09 * dt ;
+    self.progress -= 0.16 * dt ;
 }
 
 
@@ -123,7 +123,11 @@ else {
         }
 
         if(self.progress >= 1.0){
-            self.stan = Faza::Upgrade;
+            if self.level == 2 {
+                self.stan = Faza::Victory;
+            } else {
+                self.stan = Faza::Upgrade;
+            }
         }
 
 
@@ -192,11 +196,7 @@ else {
             //przejscie
             self.progress = 0.5;
             self.level += 1;
-            if self.level > 2 {
-                self.stan = Faza::Victory;
-            } else {
-                self.stan = Faza::Playing;
-            }
+            self.stan=Faza::Playing;
 
         }
 
