@@ -10,27 +10,32 @@ use crate::game::*;
 
 
 use game::Game;
+use macroquad::prelude::*;
 
-#[macroquad::main("Fishing")]
+fn window_conf() -> Conf {
+    Conf {
+        window_title: "Fishing".to_owned(),
+        fullscreen: true,
+        ..Default::default()
+    }
+}
+#[macroquad::main(window_conf)]
 async fn main() {
     let mut game = Game::new().await;
-//    draw_rectangle(400.0 ,200.0 ,screen_width() / 2.0, screen_height() / 2.0   , BLACK);
 
+    loop {
 
-    loop{
-     game.update();
-     game.draw();
-
-     next_frame().await;
-
+        game.update();
+        game.draw();
+        next_frame().await;
 
 
 
-
+    }
 }
 
 
-}
+
 
 
 

@@ -113,6 +113,10 @@ pub fn draw_fish(fish_texture: &Texture2D, fish_y: f32, level :u32) {
     }else if (level==2) {
         draw_text("LVL 2: PIKE, THE KING OF LAKES", 10.0 ,  100.0, 80.0 * scale, WHITE);
     }
+    else if (level==3) {
+        draw_text("MINI BOSS!!! SHADOW EVIL WIZARD FISH ",10.0 ,  100.0, 80.0 * scale, WHITE);
+
+    }
 
 }
 const BORDER_X: f32 = 4.0;
